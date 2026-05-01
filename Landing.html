@@ -1,0 +1,768 @@
+<!DOCTYPE html><html lang="uk" style="--radius: 14px;"><head>
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Botilogistics — CRM для логістичних компаній</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: oklch(98% 0.018 152);
+    --surface: oklch(99.5% 0.008 152);
+    --ink:#111418;
+    --ink-2:#3a3f47;
+    --muted:#6b7280;
+    --line:#e6e4de;
+    --accent: oklch(58% 0.16 152);
+    --accent-soft: oklch(95% 0.04 152);
+    --accent-ink:#ffffff;
+    --radius:14px;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.02em;color:var(--muted);text-transform:uppercase}
+  h1,h2,h3{font-family:'Inter Tight',system-ui,sans-serif;letter-spacing:-0.02em;color:var(--ink);margin:0;text-wrap:balance}
+  h1{font-size:clamp(40px,6vw,76px);line-height:1.02;font-weight:600}
+  h2{font-size:clamp(28px,3.5vw,44px);line-height:1.08;font-weight:600}
+  h3{font-size:20px;line-height:1.25;font-weight:600}
+  p{margin:0;color:var(--ink-2)}
+  a{color:inherit;text-decoration:none}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+
+  nav{
+    position:sticky;top:0;z-index:10;
+    background:rgba(246,245,242,.85);
+    backdrop-filter:saturate(120%) blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .row{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Inter Tight';font-weight:600;font-size:18px;letter-spacing:-0.01em}
+  .logo-mark{width:22px;height:22px;border-radius:6px;background:var(--accent);position:relative;overflow:hidden}
+  .logo-mark::after{content:"";position:absolute;inset:5px;border:2px solid var(--bg);border-radius:3px}
+  nav ul{list-style:none;display:flex;gap:28px;margin:0;padding:0;font-size:14px;color:var(--ink-2)}
+  nav .cta-row{display:flex;align-items:center;gap:14px}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:11px 18px;border-radius:calc(var(--radius) - 4px);
+    font-family:'Inter';font-weight:500;font-size:14px;
+    border:1px solid transparent;cursor:pointer;
+    transition:transform .12s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn-primary{background:var(--accent);color:var(--accent-ink)}
+  .btn-primary:hover{transform:translateY(-1px)}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--ink)}
+  .btn-lg{padding:14px 22px;font-size:15px}
+
+  .hero{padding:0;position:relative;isolation:isolate;margin-top:0}
+  .hero-photo{
+    position:relative;
+    width:100vw;margin-left:calc(50% - 50vw);
+    height:min(70vh, 620px);
+    background-image:url('assets/hero-van.jpg');
+    background-size:cover;
+    background-position:75% 25%;
+    display:flex;align-items:center;
+  }
+  .hero-photo::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(95deg, rgba(10,25,18,.72) 0%, rgba(10,25,18,.45) 45%, rgba(10,25,18,.05) 75%, transparent 100%);
+  }
+  .hero-inner{position:relative;z-index:1;max-width:1180px;width:100%;margin:0 auto;padding:0 28px;color:#fff}
+  .hero h1{margin-top:0;max-width:14ch;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.55), 0 1px 2px rgba(0,0,0,.7), 0 0 1px rgba(0,0,0,.9)}
+  .hero h1 em{font-style:normal;color:#fff;-webkit-text-stroke:1.2px #0a1f15;text-shadow:0 2px 6px rgba(0,0,0,.5)}
+  .hero-sub{margin-top:22px;max-width:46ch;font-size:18px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.65), 0 0 2px rgba(0,0,0,.5);font-weight:500}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;padding:6px 12px;border:1px solid color-mix(in oklch, var(--accent) 25%, var(--line));border-radius:999px;background:var(--accent-soft);font-size:12px;color:color-mix(in oklch, var(--accent) 70%, #1a1a1a)}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in oklch, var(--accent) 20%, transparent)}
+  .hero-cta{margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .hero-meta{margin-top:18px;display:flex;gap:24px;color:var(--muted);font-size:13px;flex-wrap:wrap}
+  .hero-meta span{display:inline-flex;gap:6px;align-items:center}
+  .check{width:14px;height:14px;flex:none;color:var(--accent)}
+
+  .stage{
+    margin-top:96px;
+    border:1px solid var(--line);
+    border-radius:calc(var(--radius) + 6px);
+    background:var(--surface);
+    overflow:hidden;
+    box-shadow:0 30px 60px -30px rgba(17,20,24,.18);
+    position:relative;
+  }
+  .app-top{display:flex;align-items:center;gap:14px;padding:10px 16px;background:#15233a;color:#fff;border-bottom:1px solid #0f1a2c}
+  .app-brand{font-family:'Inter Tight';font-weight:600;font-size:14px;letter-spacing:.04em;color:#e9edf5;padding-right:8px;border-right:1px solid rgba(255,255,255,.08);margin-right:6px}
+  .app-search{flex:1;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border-radius:6px;padding:6px 10px;color:#a9b3c2}
+  .app-search input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-family:'Inter';font-size:13px}
+  .app-search input::placeholder{color:#a9b3c2}
+  .app-avatar{width:28px;height:28px;border-radius:50%;background:#2a3a55;display:flex;align-items:center;justify-content:center}
+  .app-avatar span{display:block;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px #15233a}
+  .app{
+    background:#f4f5f8;
+    display:grid;grid-template-columns:240px 1fr;min-height:380px;
+  }
+  .side{padding:14px 12px;border-right:1px solid var(--line);background:#fff;display:flex;flex-direction:column;gap:4px}
+  .side-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:6px;font-size:12.5px;font-weight:600;color:#1a2536;letter-spacing:.04em;border:none;background:transparent;cursor:pointer;text-align:left;font-family:inherit;text-transform:uppercase}
+  .side-item .ic{display:flex;width:18px;height:18px;align-items:center;justify-content:center;flex:none}
+  .side-item .chev{margin-left:auto;color:#9aa3b2;font-size:11px}
+  .side-item:hover{background:#f4f5f8}
+  .side-item.active{background:#f4f5f8}
+  .side-cta{margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 14px;background:#1a2c4a;color:#fff;border:none;border-radius:6px;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer}
+  .side-cta:hover{background:#22385f}
+  .side-ghost{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;background:#fff;color:#1a2536;border:1px solid var(--line);border-radius:6px;font-family:inherit;font-size:13px;cursor:pointer;margin-top:6px}
+  .main-empty{display:flex;align-items:center;justify-content:center;padding:48px 24px;background:#f4f5f8}
+  .empty{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+  .empty-ic{margin-bottom:6px}
+  .empty-title{font-family:'Inter Tight';font-weight:600;font-size:18px;color:#1a2536}
+  .empty-sub{font-size:13.5px;color:#8a93a3}
+  .empty-add{margin-top:14px;width:48px;height:48px;border-radius:50%;border:none;background:var(--accent);color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px -8px color-mix(in oklch, var(--accent) 60%, transparent);transition:transform .15s ease}
+  .empty-add:hover{transform:scale(1.05)}
+
+  .demo-tag{display:inline-flex;align-items:center;gap:8px;margin:48px 0 14px;padding:6px 14px;border:1px solid color-mix(in oklch, var(--accent) 25%, var(--line));background:var(--accent-soft);border-radius:999px;font-family:'JetBrains Mono';font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:color-mix(in oklch, var(--accent) 60%, #1a1a1a)}
+  .demo-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in oklch, var(--accent) 18%, transparent);animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+  /* Filled list / panel */
+  .panel{flex:1;display:flex;flex-direction:column;background:#f4f5f8;min-height:380px}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:#fff;border-bottom:1px solid var(--line)}
+  .panel-head h4{margin:0;font-family:'Inter Tight';font-size:15px;font-weight:600;color:#1a2536}
+  .panel-head .count{font-size:12px;color:var(--muted);margin-left:8px}
+  .btn-add{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:none;background:var(--accent);color:#fff;border-radius:6px;font-family:inherit;font-size:13px;cursor:pointer;font-weight:500}
+  .btn-add:hover{filter:brightness(1.05)}
+  .list{padding:12px;display:flex;flex-direction:column;gap:8px;overflow:auto;max-height:340px}
+  .list-row{display:grid;grid-template-columns:36px 1fr auto;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+  .list-row .av{width:32px;height:32px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;font-family:'Inter Tight'}
+  .list-row .nm{font-size:14px;font-weight:500;color:#1a2536}
+  .list-row .meta{font-size:12px;color:var(--muted);margin-top:2px;font-family:'JetBrains Mono'}
+  .list-row .del{background:transparent;border:none;color:#aaa;cursor:pointer;padding:6px;font-size:14px}
+  .list-row .del:hover{color:#b94a3a}
+
+  /* Calendar */
+  .cal{padding:16px 20px;background:#f4f5f8;flex:1}
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .cal-title{font-family:'Inter Tight';font-weight:600;font-size:16px;color:#1a2536;text-transform:capitalize}
+  .cal-nav{display:flex;gap:6px}
+  .cal-nav button{width:28px;height:28px;border:1px solid var(--line);background:#fff;border-radius:6px;cursor:pointer;color:#1a2536;font-size:14px;display:flex;align-items:center;justify-content:center}
+  .cal-nav button:hover{background:#f4f5f8}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px}
+  .cal-dow{text-align:center;font-size:10.5px;text-transform:uppercase;color:var(--muted);padding:6px 0;letter-spacing:.05em;font-weight:600}
+  .cal-day{aspect-ratio:1;border:1px solid transparent;border-radius:6px;padding:6px;font-size:12px;color:#1a2536;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;background:#fafbfc;transition:background .12s ease}
+  .cal-day:hover{background:var(--accent-soft)}
+  .cal-day.dim{color:#c4c9d2;background:transparent}
+  .cal-day.today{border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+  .cal-day .ev{display:flex;flex-wrap:wrap;gap:2px;margin-top:auto}
+  .cal-day .ev i{width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block}
+  .cal-day.has-ev{font-weight:600}
+
+  /* Modal */
+  .modal-bg{position:absolute;inset:0;background:rgba(15,26,44,.45);display:none;align-items:center;justify-content:center;z-index:5;backdrop-filter:blur(2px)}
+  .modal-bg.open{display:flex}
+  .modal{background:#fff;border-radius:12px;width:min(420px,92%);box-shadow:0 30px 60px -20px rgba(0,0,0,.4);overflow:hidden}
+  .modal-head{padding:18px 22px 4px}
+  .modal-head h4{margin:0;font-family:'Inter Tight';font-size:18px;font-weight:600;color:#1a2536}
+  .modal-head p{margin:4px 0 0;font-size:13px;color:var(--muted)}
+  .modal-body{padding:14px 22px 18px;display:flex;flex-direction:column;gap:12px}
+  .field{display:flex;flex-direction:column;gap:4px}
+  .field label{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+  .field input,.field select{padding:9px 12px;border:1px solid var(--line);border-radius:6px;font-family:inherit;font-size:14px;color:#1a2536;background:#fff;outline:none;transition:border-color .15s ease}
+  .field input:focus,.field select:focus{border-color:var(--accent)}
+  .modal-foot{padding:14px 22px;background:#fafbfc;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+  .modal-foot .btn{font-size:13px;padding:9px 16px}
+  .modal-foot .cancel{background:transparent;border:1px solid var(--line);color:#1a2536;cursor:pointer;border-radius:6px;font-family:inherit;font-size:13px;padding:9px 16px}
+  .modal-foot .save{background:var(--accent);border:none;color:#fff;border-radius:6px;font-family:inherit;font-size:13px;padding:9px 16px;cursor:pointer;font-weight:500}
+
+  .logos{padding:48px 0 8px;border-top:1px solid var(--line);margin-top:80px}
+  .logos .label{text-align:center;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+  .logo-row{display:flex;flex-wrap:wrap;justify-content:center;gap:24px 40px;margin-top:22px;align-items:center}
+  .logo-row > div{display:flex;align-items:center;color:var(--muted);font-family:'Inter Tight';font-weight:600;letter-spacing:.02em;opacity:.7;font-size:18px;text-align:center}
+
+  .features{padding:96px 0}
+  .features header{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:44px}
+  .features header p{max-width:42ch;font-size:16px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .card{
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);padding:24px;
+    display:flex;flex-direction:column;gap:14px;min-height:230px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .card:hover{border-color:color-mix(in oklch, var(--accent) 30%, var(--line));transform:translateY(-2px)}
+  .ic-box{
+    width:40px;height:40px;border-radius:calc(var(--radius) - 4px);
+    background:var(--accent-soft);border:1px solid color-mix(in oklch, var(--accent) 20%, var(--line));
+    display:flex;align-items:center;justify-content:center;color:var(--accent);
+  }
+  .card h3{font-size:18px}
+  .card p{font-size:14.5px;color:var(--ink-2)}
+
+  .how{padding:96px 0;border-top:1px solid var(--line)}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px}
+  .step{padding:24px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+  .step .num{font-family:'JetBrains Mono';font-size:12px;color:var(--accent);margin-bottom:14px}
+  .step h3{font-size:18px;margin-bottom:8px}
+  .step p{font-size:14.5px}
+
+  .cta-band{
+    margin:96px 0;padding:64px 56px;
+    background:linear-gradient(135deg, oklch(28% 0.07 152) 0%, oklch(20% 0.04 152) 100%);
+    color:#fff;position:relative;overflow:hidden;
+    border-radius:calc(var(--radius) + 6px);
+    display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:center;
+  }
+  .cta-band::before{content:"";position:absolute;inset:0;background:url('assets/hero-van.jpg') center/cover no-repeat;opacity:.12;pointer-events:none}
+  .cta-band > *{position:relative;z-index:1}
+  .cta-band h2{color:#fff;max-width:18ch}
+  .cta-band p{color:#bfc4cc;margin-top:14px;max-width:48ch}
+  .cta-band .actions{display:flex;flex-direction:column;gap:10px}
+  .cta-band .btn-primary{background:var(--accent);color:#fff}
+  .cta-band .btn-ghost{color:#fff;border-color:rgba(255,255,255,.25)}
+  .cta-band .btn-ghost:hover{border-color:#fff}
+  .cta-band small{color:#7e8590;font-family:'JetBrains Mono';font-size:11px}
+
+  footer{border-top:1px solid var(--line);padding:40px 0 56px;color:var(--muted);font-size:13px}
+  footer .row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px}
+  footer .links{display:flex;gap:22px}
+
+  /* Tweaks panel (vanilla, no React) */
+  .tweaks-panel{
+    position:fixed;right:20px;bottom:20px;z-index:9999;display:none;
+    background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;box-shadow:0 20px 40px -10px rgba(0,0,0,.18);
+    font-family:'Inter',system-ui,sans-serif;width:260px;
+  }
+  .tweaks-panel.open{display:block}
+  .tweaks-panel h4{margin:0;font-family:'Inter Tight';font-weight:600}
+  .tweaks-panel .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .tweaks-panel button.close{border:none;background:transparent;cursor:pointer;color:var(--muted);font-size:18px}
+  .tweaks-panel label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
+  .tweaks-panel label b{font-family:'JetBrains Mono';color:var(--ink);font-weight:500}
+  .tweaks-panel input[type=range]{width:100%;accent-color:var(--accent)}
+  .tweaks-panel .scale{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px;font-family:'JetBrains Mono'}
+
+  @media (max-width: 880px){
+    .app{grid-template-columns:1fr}
+    .side{display:none}
+    .grid,.steps,.logo-row{grid-template-columns:repeat(2,1fr)}
+    .cta-band{grid-template-columns:1fr;padding:40px 28px}
+    .features header{flex-direction:column;align-items:flex-start}
+  }
+</style>
+</head>
+<body style="background-color: rgb(255, 255, 255);">
+
+<nav>
+  <div class="wrap row">
+    <a class="logo" href="#">
+      <span class="logo-mark"></span>
+      Botilogistics
+    </a>
+    <ul>
+      <li><a href="#features">Можливості</a></li>
+      <li><a href="#how">Як працює</a></li>
+      <li><a href="#pricing">Тарифи</a></li>
+      <li><a href="#contact">Контакти</a></li>
+    </ul>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="#cta">Спробувати безкоштовно</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-photo">
+    <div class="hero-inner">
+      <h1>Наведіть <em>лад</em> у своєму бізнесі.</h1>
+      <p class="hero-sub">Замовлення, водії, маршрути та клієнти — в одному місці. Без таблиць у Excel і блокнотів.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary btn-lg" href="#cta">Почати безкоштовно →</a>
+        <a class="btn btn-ghost btn-lg" href="#demo" style="color:#fff;border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.08)">Подивитись демо</a>
+      </div>
+      <div class="hero-meta" style="color:rgba(255,255,255,.85)">
+        <span><svg class="check" viewBox="0 0 16 16" fill="none" style="color:#fff"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg> 14 днів безкоштовно</span>
+        <span><svg class="check" viewBox="0 0 16 16" fill="none" style="color:#fff"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg> Без банківської картки</span>
+        <span><svg class="check" viewBox="0 0 16 16" fill="none" style="color:#fff"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg> Налаштування за 10 хвилин</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="demo-tag">
+    <span class="demo-tag-dot"></span>Демонстраційна версія · повністю робоча
+  </div>
+  <div class="stage" id="demo">
+    <div class="app-top">
+      <div class="app-brand">Ваша назва</div>
+      <div class="app-search">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.4"></circle><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>
+        <input placeholder="Пошук по ПІБ або телефону...">
+      </div>
+      <div class="app-avatar"><span></span></div>
+    </div>
+    <div class="app">
+      <aside class="side">
+        <button class="side-item dm-tab active" data-tab="passengers">
+          <span class="ic" style="color:#3b6ef5">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="2.5" stroke="currentColor" stroke-width="1.4"></circle><path d="M3 13c.6-2.3 2.7-3.5 5-3.5s4.4 1.2 5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path></svg>
+          </span>
+          ПАСАЖИРИ <span class="chev">▸</span>
+        </button>
+        <button class="side-item dm-tab" data-tab="parcels">
+          <span class="ic" style="color:#d44b3a">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 5l6-2 6 2v6l-6 2-6-2V5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path><path d="M2 5l6 2 6-2M8 7v6" stroke="currentColor" stroke-width="1.4"></path></svg>
+          </span>
+          ПОСИЛКИ <span class="chev">▸</span>
+        </button>
+        <button class="side-item dm-tab" data-tab="routes">
+          <span class="ic" style="color:#2f8a5b">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 13l4-2 5 1.5L13.5 11M5 4l3 1.5L12 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </span>
+          МАРШРУТИ <span class="chev">▸</span>
+        </button>
+      </aside>
+
+      <section class="main main-empty" id="dm-main">
+        <!-- rendered by JS -->
+      </section>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-bg" id="dm-modal">
+      <div class="modal" role="dialog" aria-modal="true">
+        <div class="modal-head">
+          <h4 id="dm-modal-title">Новий пасажир</h4>
+          <p id="dm-modal-sub">Заповніть основні дані</p>
+        </div>
+        <div class="modal-body" id="dm-modal-body">
+          <!-- form fields rendered by JS -->
+        </div>
+        <div class="modal-foot">
+          <button class="cancel" id="dm-cancel">Скасувати</button>
+          <button class="save"   id="dm-save">Зберегти</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="wrap logos">
+  <div class="label">Нам довіряють компанії</div>
+  <div class="logo-row">
+    <div>SanchoBus</div>
+    <div>EscoExpress</div>
+    <div>Світ Комфортних Перевезень</div>
+    <div>Nordic Express</div>
+    <div>YaremaBus</div>
+  </div>
+</section>
+
+<section id="features" class="wrap features">
+  <header>
+    <div>
+      <div class="mono">можливості</div>
+      <h2 style="margin-top:10px">Усе, що потрібно для керування доставкою.</h2>
+    </div>
+    <p></p>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ic-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"></rect><path d="M3 10h18M8 5V3M16 5V3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+      </div>
+      <h3>Замовлення в один клік</h3>
+      <p>Прийом заявок із пошти, телефону, форми сайту. Автоматичне призначення водія за зоною та завантаженням.</p>
+    </div>
+
+    <div class="card">
+      <div class="ic-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 17l4-2 5 2 7-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path><circle cx="8" cy="15" r="1.4" fill="currentColor"></circle><circle cx="13" cy="17" r="1.4" fill="currentColor"></circle><circle cx="20" cy="14" r="1.4" fill="currentColor"></circle></svg>
+      </div>
+      <h3>Маршрути та ETA</h3>
+      <p>Оптимізація послідовності точок, врахування пробок і вікон доставки. Точні ETA для клієнтів — без зайвих дзвінків.</p>
+    </div>
+
+    <div class="card">
+      <div class="ic-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="3.5" stroke="currentColor" stroke-width="1.6"></circle><path d="M5 20c1-3.5 4-5.5 7-5.5s6 2 7 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+      </div>
+      <h3>Водії та авто</h3>
+      <p>Профіль кожного водія, ТО, документи, відпустки. Мобільний застосунок для прийому рейсів і фото-підтвердження доставки.</p>
+    </div>
+
+    <div class="card">
+      <div class="ic-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 19V5l8 5 8-5v14" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path></svg>
+      </div>
+      <h3>База клієнтів</h3>
+      <p>Історія замовлень, тарифи, договори, заборгованість. Статуси, теги, нотатки — усе як у класичній CRM, але під логістику.</p>
+    </div>
+
+    <div class="card">
+      <div class="ic-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 20V10M9 20V4M15 20v-8M21 20v-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg>
+      </div>
+      <h3>Звіти та фінанси</h3>
+      <p>Виручка, маржинальність рейсів, борги контрагентів. Експорт у Excel і 1С, інтеграція з банком для звірок.</p>
+    </div>
+
+    <div class="card">
+      <div class="ic-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="1.6"></rect><path d="M8 12l3 3 5-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </div>
+      <h3>Автоматизація</h3>
+      <p>Сценарії: SMS клієнту коли вантаж відправлено, нагадування про оплату, ескалація запізнень. Без коду.</p>
+    </div>
+  </div>
+</section>
+
+<section id="how" class="wrap how">
+  <header style="display:flex;flex-direction:column;gap:10px">
+    <div class="mono">як це працює</div>
+    <h2>Запуск за один робочий день.</h2>
+  </header>
+
+  <div class="steps">
+    <div class="step">
+      <div class="num">01 / Реєстрація</div>
+      <h3>Створіть акаунт</h3>
+      <p>Заповніть просту форму, підтвердіть пошту. Доступ до повної версії — одразу.</p>
+    </div>
+    <div class="step">
+      <div class="num">02 / Налаштування</div>
+      <h3>Додайте команду й клієнтів</h3>
+      <p>Імпорт з Excel або вручну. Запросіть водіїв — вони отримають мобільний застосунок.</p>
+    </div>
+    <div class="step">
+      <div class="num">03 / Запуск</div>
+      <h3>Працюйте в одному вікні</h3>
+      <p>Створюйте рейси, призначайте водіїв, відстежуйте статуси. Аналітика — з першого дня.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="cta">
+  <div class="cta-band">
+    <div>
+      <h2>Готові навести лад у своїй логістиці?</h2>
+      <p>Спробуйте Botilogistics безкоштовно протягом 14 днів. Без банківської картки, без зобов'язань.</p>
+    </div>
+    <div class="actions">
+      <a class="btn btn-primary btn-lg" href="#cta">Записатись на демо →</a>
+      <small>14 днів · повний функціонал · підтримка українською</small>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap row">
+    <div>
+      <div class="logo"><span class="logo-mark"></span>Botilogistics</div>
+      <p style="margin-top:10px;font-size:13px;color:var(--muted)">CRM для логістичних компаній · Київ, Україна</p>
+    </div>
+    <div class="links">
+      <a href="#">Можливості</a>
+      <a href="#">Тарифи</a>
+      <a href="#">Підтримка</a>
+      <a href="#">Політика конфіденційності</a>
+    </div>
+    <div class="mono">© 2026 Botilogistics</div>
+  </div>
+</footer>
+
+<!-- Tweaks: радіус кутів (vanilla, no React) -->
+<div class="tweaks-panel" id="tweaks-panel">
+  <div class="head">
+    <h4>Tweaks</h4>
+    <button class="close" id="tw-close" aria-label="Close">×</button>
+  </div>
+  <label>Радіус кутів: <b id="tw-val">14px</b></label>
+  <input type="range" min="0" max="28" step="1" value="14" id="tw-radius">
+  <div class="scale"><span>0</span><span>14</span><span>28</span></div>
+</div>
+
+<script>
+(function(){
+  var TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "radius": 14
+  }/*EDITMODE-END*/;
+
+  var panel  = document.getElementById('tweaks-panel');
+  var closeB = document.getElementById('tw-close');
+  var slider = document.getElementById('tw-radius');
+  var valEl  = document.getElementById('tw-val');
+
+  function applyRadius(r){
+    document.documentElement.style.setProperty('--radius', r + 'px');
+    valEl.textContent = r + 'px';
+    slider.value = r;
+  }
+  applyRadius(TWEAK_DEFAULTS.radius);
+
+  window.addEventListener('message', function(e){
+    var d = e.data || {};
+    if (d.type === '__activate_edit_mode')   panel.classList.add('open');
+    if (d.type === '__deactivate_edit_mode') panel.classList.remove('open');
+  });
+
+  // Announce availability AFTER listener is registered
+  try { window.parent.postMessage({type: '__edit_mode_available'}, '*'); } catch(e){}
+
+  closeB.addEventListener('click', function(){
+    panel.classList.remove('open');
+    try { window.parent.postMessage({type: '__edit_mode_dismissed'}, '*'); } catch(e){}
+  });
+
+  slider.addEventListener('input', function(){
+    var v = parseInt(slider.value, 10);
+    applyRadius(v);
+    try { window.parent.postMessage({type: '__edit_mode_set_keys', edits: {radius: v}}, '*'); } catch(e){}
+  });
+
+  // ===== Demo state =====
+  var state = {
+    tab: 'passengers',
+    passengers: [],   // {id, name, phone}
+    parcels: [],      // {id, sender, receiver, weight}
+    events: [],       // {id, date:'YYYY-MM-DD', title, time}
+    routes: [],       // {id, from, to, distance}
+    cal: { y: new Date().getFullYear(), m: new Date().getMonth() } // m: 0..11
+  };
+  var todayISO = (function(){
+    var d = new Date(); var p = function(n){return n<10?'0'+n:n;};
+    return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());
+  })();
+  var TODAY_Y = new Date().getFullYear(), TODAY_M = new Date().getMonth(), TODAY_D = new Date().getDate();
+  var MONTHS = ['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'];
+  var DOW = ['Пн','Вт','Ср','Чт','Пт','Сб','Нд'];
+
+  var EMPTY = {
+    passengers: {title:'Немає пасажирів',  sub:'Додайте першого пасажира',
+      ic:'<svg width="44" height="44" viewBox="0 0 44 44" fill="none"><rect x="10" y="6" width="24" height="32" rx="3" fill="#fff" stroke="#c97a4a" stroke-width="2"/><rect x="16" y="3" width="12" height="6" rx="1.5" fill="#c97a4a"/><path d="M15 17h14M15 22h14M15 27h10" stroke="#c97a4a" stroke-width="1.6" stroke-linecap="round"/></svg>'},
+    parcels: {title:'Немає посилок', sub:'Додайте першу посилку',
+      ic:'<svg width="44" height="44" viewBox="0 0 44 44" fill="none"><path d="M6 14l16-6 16 6v16l-16 6-16-6V14z" fill="#fff" stroke="#c97a4a" stroke-width="2" stroke-linejoin="round"/><path d="M6 14l16 6 16-6M22 20v16" stroke="#c97a4a" stroke-width="1.8" stroke-linecap="round"/></svg>'},
+    routes: {title:'Немає маршрутів', sub:'Додайте перший маршрут',
+      ic:'<svg width="44" height="44" viewBox="0 0 44 44" fill="none"><path d="M8 34l8-4 12 3 8-3" stroke="#c97a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 12l8 4 12-4" stroke="#c97a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.5" fill="#c97a4a"/><circle cx="32" cy="34" r="2.5" fill="#c97a4a"/></svg>'}
+  };
+
+  var TITLES = { passengers:'Пасажири', parcels:'Посилки', routes:'Маршрути', calendar:'Календар' };
+
+  var tabs = document.querySelectorAll('.dm-tab');
+  var main = document.getElementById('dm-main');
+  var modal = document.getElementById('dm-modal');
+  var modalTitle = document.getElementById('dm-modal-title');
+  var modalSub = document.getElementById('dm-modal-sub');
+  var modalBody = document.getElementById('dm-modal-body');
+  var btnCancel = document.getElementById('dm-cancel');
+  var btnSave = document.getElementById('dm-save');
+
+  function escapeHtml(s){ return String(s||'').replace(/[&<>"]/g, function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];}); }
+  function uid(){ return Math.random().toString(36).slice(2,9); }
+  function initials(name){ var p = (name||'').trim().split(/\s+/); return ((p[0]||'')[0]||'?').toUpperCase() + ((p[1]||'')[0]||'').toUpperCase(); }
+
+  function setTab(name){
+    state.tab = name;
+    tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.tab === name); });
+    render();
+  }
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ setTab(t.dataset.tab); }); });
+
+  function render(){
+    if (state.tab === 'passengers') return renderList('passengers');
+    if (state.tab === 'parcels')    return renderList('parcels');
+    if (state.tab === 'routes')     return renderList('routes');
+    if (state.tab === 'calendar')   return renderCalendar();
+  }
+
+  function renderList(kind){
+    var items = state[kind];
+    if (!items.length) {
+      main.classList.add('main-empty');
+      main.innerHTML = ''
+        + '<div class="empty">'
+        +   '<div class="empty-ic">' + EMPTY[kind].ic + '</div>'
+        +   '<div class="empty-title">' + EMPTY[kind].title + '</div>'
+        +   '<div class="empty-sub">'  + EMPTY[kind].sub  + '</div>'
+        +   '<button class="empty-add" data-action="add" aria-label="Додати">+</button>'
+        + '</div>';
+    } else {
+      main.classList.remove('main-empty');
+      var rows = items.map(function(it){
+        if (kind === 'passengers'){
+          return '<div class="list-row">'
+            + '<div class="av">'+ escapeHtml(initials(it.name)) +'</div>'
+            + '<div><div class="nm">'+ escapeHtml(it.name) +'</div><div class="meta">'+ escapeHtml(it.phone||'—') +'</div></div>'
+            + '<button class="del" data-action="del" data-id="'+ it.id +'" aria-label="Видалити">✕</button>'
+          + '</div>';
+        }
+        if (kind === 'parcels'){
+          return '<div class="list-row">'
+            + '<div class="av">◼</div>'
+            + '<div><div class="nm">'+ escapeHtml(it.sender) +' → '+ escapeHtml(it.receiver) +'</div><div class="meta">'+ escapeHtml(it.weight||'—') +'</div></div>'
+            + '<button class="del" data-action="del" data-id="'+ it.id +'" aria-label="Видалити">✕</button>'
+          + '</div>';
+        }
+        return '<div class="list-row">'
+          + '<div class="av">→</div>'
+          + '<div><div class="nm">'+ escapeHtml(it.from) +' → '+ escapeHtml(it.to) +'</div><div class="meta">'+ escapeHtml(it.distance||'—') +'</div></div>'
+          + '<button class="del" data-action="del" data-id="'+ it.id +'" aria-label="Видалити">✕</button>'
+        + '</div>';
+      }).join('');
+      main.innerHTML = ''
+        + '<div class="panel">'
+        +   '<div class="panel-head">'
+        +     '<div><h4 style="display:inline">'+ TITLES[kind] +'</h4><span class="count">· '+ items.length +'</span></div>'
+        +     '<button class="btn-add" data-action="add">+ '+ (kind==='passengers'?'Новий пасажир': kind==='parcels'?'Нова посилка':'Новий маршрут') +'</button>'
+        +   '</div>'
+        +   '<div class="list">'+ rows +'</div>'
+        + '</div>';
+    }
+  }
+
+  function renderCalendar(){
+    main.classList.remove('main-empty');
+    var y = state.cal.y, m = state.cal.m;
+    var first = new Date(y, m, 1);
+    // weekday Mon=0..Sun=6
+    var startDow = (first.getDay() + 6) % 7;
+    var daysInMonth = new Date(y, m+1, 0).getDate();
+    var prevDays = new Date(y, m, 0).getDate();
+    var cells = [];
+    // leading dim
+    for (var i = startDow-1; i >= 0; i--) cells.push({d: prevDays - i, dim: true, y:(m===0?y-1:y), m:(m===0?11:m-1)});
+    for (var d = 1; d <= daysInMonth; d++) cells.push({d:d, dim:false, y:y, m:m});
+    while (cells.length % 7 !== 0 || cells.length < 42){
+      var nd = cells.length - (startDow + daysInMonth) + 1;
+      cells.push({d: nd, dim:true, y:(m===11?y+1:y), m:(m===11?0:m+1)});
+      if (cells.length >= 42) break;
+    }
+
+    var dowHtml = DOW.map(function(d){return '<div class="cal-dow">'+d+'</div>';}).join('');
+    var pad = function(n){return n<10?'0'+n:n;};
+    var cellsHtml = cells.map(function(c){
+      var iso = c.y+'-'+pad(c.m+1)+'-'+pad(c.d);
+      var ev = state.events.filter(function(e){return e.date===iso;});
+      var isToday = (!c.dim && c.y===TODAY_Y && c.m===TODAY_M && c.d===TODAY_D);
+      var cls = 'cal-day' + (c.dim?' dim':'') + (isToday?' today':'') + (ev.length?' has-ev':'');
+      var dots = ev.slice(0,4).map(function(){return '<i></i>';}).join('');
+      return '<button class="'+cls+'" data-action="day" data-iso="'+iso+'">'
+        + '<span>'+c.d+'</span>'
+        + '<span class="ev">'+dots+'</span>'
+      + '</button>';
+    }).join('');
+
+    main.innerHTML = ''
+      + '<div class="cal">'
+      +   '<div class="cal-head">'
+      +     '<div class="cal-title">'+ MONTHS[m] +' '+ y +'</div>'
+      +     '<div class="cal-nav">'
+      +       '<button data-action="cal-prev" aria-label="Попередній">‹</button>'
+      +       '<button data-action="cal-today">сьогодні</button>'
+      +       '<button data-action="cal-next" aria-label="Наступний">›</button>'
+      +     '</div>'
+      +   '</div>'
+      +   '<div class="cal-grid">'+ dowHtml + cellsHtml +'</div>'
+      + '</div>';
+  }
+
+  // delegated clicks inside main
+  main.addEventListener('click', function(e){
+    var btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    var action = btn.dataset.action;
+    if (action === 'add')        openModal(state.tab);
+    if (action === 'del')        { var id = btn.dataset.id; state[state.tab] = state[state.tab].filter(function(x){return x.id!==id;}); render(); }
+    if (action === 'cal-prev')   { if (state.cal.m===0){state.cal.m=11;state.cal.y--;} else state.cal.m--; render(); }
+    if (action === 'cal-next')   { if (state.cal.m===11){state.cal.m=0;state.cal.y++;} else state.cal.m++; render(); }
+    if (action === 'cal-today')  { state.cal.y=TODAY_Y; state.cal.m=TODAY_M; render(); }
+    if (action === 'day')        { openModal('event', btn.dataset.iso); }
+  });
+
+  // ===== Modal =====
+  var modalKind = null;
+  var modalDate = null;
+  function openModal(kind, isoDate){
+    modalKind = kind;
+    modalDate = isoDate || null;
+    if (kind === 'passengers'){
+      modalTitle.textContent = 'Новий пасажир';
+      modalSub.textContent = 'Заповніть основні дані';
+      modalBody.innerHTML = ''
+        + '<div class="field"><label>ПІБ</label><input id="f-name" placeholder="Іван Шевченко" /></div>'
+        + '<div class="field"><label>Телефон</label><input id="f-phone" placeholder="+380 67 123 4567" /></div>';
+    } else if (kind === 'parcels'){
+      modalTitle.textContent = 'Нова посилка';
+      modalSub.textContent = 'Хто відправляє та хто отримує';
+      modalBody.innerHTML = ''
+        + '<div class="field"><label>Відправник</label><input id="f-sender" placeholder="Іван Шевченко" /></div>'
+        + '<div class="field"><label>Отримувач</label><input id="f-receiver" placeholder="Олена Коваль" /></div>'
+        + '<div class="field"><label>Опис / вага</label><input id="f-weight" placeholder="Документи · 0.5 кг" /></div>';
+    } else if (kind === 'routes'){
+      modalTitle.textContent = 'Новий маршрут';
+      modalSub.textContent = 'Звідки та куди';
+      modalBody.innerHTML = ''
+        + '<div class="field"><label>Звідки</label><input id="f-from" placeholder="Київ" /></div>'
+        + '<div class="field"><label>Куди</label><input id="f-to" placeholder="Львів" /></div>'
+        + '<div class="field"><label>Відстань / тариф</label><input id="f-dist" placeholder="540 км · ₴2 800" /></div>';
+    } else if (kind === 'event'){
+      modalTitle.textContent = 'Подія в календарі';
+      modalSub.textContent = isoDate;
+      modalBody.innerHTML = ''
+        + '<div class="field"><label>Назва</label><input id="f-title" placeholder="Рейс Київ → Львів" /></div>'
+        + '<div class="field"><label>Час</label><input id="f-time" placeholder="14:30" /></div>';
+    }
+    modal.classList.add('open');
+    setTimeout(function(){ var i = modal.querySelector('input'); if (i) i.focus(); }, 50);
+  }
+  function closeModal(){ modal.classList.remove('open'); }
+  btnCancel.addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e){ if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeModal(); });
+
+  btnSave.addEventListener('click', function(){
+    if (modalKind === 'passengers'){
+      var name = (document.getElementById('f-name').value||'').trim();
+      var phone = (document.getElementById('f-phone').value||'').trim();
+      if (!name) return;
+      state.passengers.push({id:uid(), name:name, phone:phone});
+    } else if (modalKind === 'parcels'){
+      var sender = (document.getElementById('f-sender').value||'').trim();
+      var receiver = (document.getElementById('f-receiver').value||'').trim();
+      var weight = (document.getElementById('f-weight').value||'').trim();
+      if (!sender || !receiver) return;
+      state.parcels.push({id:uid(), sender:sender, receiver:receiver, weight:weight});
+    } else if (modalKind === 'routes'){
+      var from = (document.getElementById('f-from').value||'').trim();
+      var to = (document.getElementById('f-to').value||'').trim();
+      var dist = (document.getElementById('f-dist').value||'').trim();
+      if (!from || !to) return;
+      state.routes.push({id:uid(), from:from, to:to, distance:dist});
+    } else if (modalKind === 'event'){
+      var title = (document.getElementById('f-title').value||'').trim();
+      var time = (document.getElementById('f-time').value||'').trim();
+      if (!title) return;
+      state.events.push({id:uid(), date:modalDate, title:title, time:time});
+    }
+    closeModal();
+    render();
+  });
+
+  render();
+})();
+</script>
+
+
+
+</body></html>
