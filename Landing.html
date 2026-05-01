@@ -183,10 +183,14 @@
   .modal-foot .cancel{background:transparent;border:1px solid var(--line);color:#1a2536;cursor:pointer;border-radius:6px;font-family:inherit;font-size:13px;padding:9px 16px}
   .modal-foot .save{background:var(--accent);border:none;color:#fff;border-radius:6px;font-family:inherit;font-size:13px;padding:9px 16px;cursor:pointer;font-weight:500}
 
-  .logos{padding:48px 0 8px;border-top:1px solid var(--line);margin-top:80px}
-  .logos .label{text-align:center;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
-  .logo-row{display:flex;flex-wrap:wrap;justify-content:center;gap:24px 40px;margin-top:22px;align-items:center}
-  .logo-row > div{display:flex;align-items:center;color:var(--muted);font-family:'Inter Tight';font-weight:600;letter-spacing:.02em;opacity:.7;font-size:18px;text-align:center}
+  .logos{padding:56px 0 16px;border-top:1px solid var(--line);margin-top:80px;overflow:hidden}
+  .logos .label{text-align:center;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:28px}
+  .logo-track-wrap{position:relative;overflow:hidden;mask-image:linear-gradient(to right,transparent 0%,#000 8%,#000 92%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,#000 8%,#000 92%,transparent 100%)}
+  .logo-track{display:flex;align-items:center;gap:0;width:max-content;animation:marquee 28s linear infinite}
+  .logo-track:hover{animation-play-state:paused}
+  .logo-item{display:flex;align-items:center;color:var(--muted);font-family:'Inter Tight';font-weight:700;letter-spacing:.01em;opacity:.65;font-size:22px;white-space:nowrap;padding:0 52px;border-right:1px solid var(--line)}
+  .logo-item:last-child{border-right:none}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
   .features{padding:96px 0}
   .features header{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:44px}
@@ -357,14 +361,26 @@
   </div>
 </div>
 
-<section class="wrap logos">
+<section class="logos">
   <div class="label">Нам довіряють компанії</div>
-  <div class="logo-row">
-    <div>SanchoBus</div>
-    <div>EscoExpress</div>
-    <div>Світ Комфортних Перевезень</div>
-    <div>Nordic Express</div>
-    <div>YaremaBus</div>
+  <div class="logo-track-wrap">
+    <div class="logo-track" id="logo-track">
+      <div class="logo-item">SanchoBus</div>
+      <div class="logo-item">EscoExpress</div>
+      <div class="logo-item">Світ Комфортних Перевезень</div>
+      <div class="logo-item">Nordic Express</div>
+      <div class="logo-item">YaremaBus</div>
+      <div class="logo-item">Gutsul Travel</div>
+      <div class="logo-item">Yura Transportation</div>
+      <!-- дублікат для безшовного циклу -->
+      <div class="logo-item">SanchoBus</div>
+      <div class="logo-item">EscoExpress</div>
+      <div class="logo-item">Світ Комфортних Перевезень</div>
+      <div class="logo-item">Nordic Express</div>
+      <div class="logo-item">YaremaBus</div>
+      <div class="logo-item">Gutsul Travel</div>
+      <div class="logo-item">Yura Transportation</div>
+    </div>
   </div>
 </section>
 
