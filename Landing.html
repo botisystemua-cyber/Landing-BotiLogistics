@@ -49,8 +49,10 @@
     backdrop-filter:saturate(120%) blur(10px);
     border-bottom:1px solid var(--line);
   }
-  .nav-row{display:flex;align-items:center;gap:40px;height:76px}
-  .nav-row .logo{margin-right:4px}
+  nav .wrap-wide{max-width:1600px;padding:0 clamp(20px,2.5vw,40px)}
+  .nav-row{display:flex;align-items:center;gap:32px;height:76px}
+  .nav-row .logo{margin-right:8px}
+  .nav-row ul{margin-right:auto}
   .nav-row .cta-row{margin-left:auto}
   .logo{display:flex;align-items:center;gap:10px;font-family:'Inter Tight';font-weight:700;font-size:22px;letter-spacing:-0.02em}
   .logo-mark{width:26px;height:26px;border-radius:7px;background:var(--accent);position:relative;overflow:hidden}
